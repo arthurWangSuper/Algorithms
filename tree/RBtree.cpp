@@ -25,17 +25,31 @@ class RBtree{
 		RBtree():root(NULL){};
 		~RBtree(){};
 		int insert_node(rbtree *node);
+		int delete_node(rbtree *node);
+		rbtree *search_node(rbtree *node);
+		int printtree(rbtree *node);
+	private:
 		int insert_fixup(rbtree *node);
-		int delet_node(rbtree *node);
 		int delete_fixup(rbtree *node);
-		int RB_ transplant(rbtree *snode,rbtree *dnode);
+		int RB_transplant(rbtree *snode,rbtree *dnode);
 		int left_rotate(rbtree *node);
 		int right_rotate(rbtree *node);
-		int printtree(rbtree *node);
-		rbtree *getminnode();
-	public:
+		rbtree *getminimumnode(rbtree *node);
+	private:
 		rbtree *root;
 };
+
+rbtree* RBtree::getminimumnode(rbtree *node)
+{
+	rbtree *temp_node;
+	while(node->leftchild != NULL)
+	{
+		temp_node = node;
+		node = node->leftchild;
+	}
+	
+	return node;
+}
 /*left rotate*/
 int RBtree::left_rotate(rbtree *node)
 {
@@ -78,7 +92,6 @@ int RB_transplant(rbtree *snode,rbtree *dnode)
 }
 /*insert new node*/
 int RBtree::insert_node(rbtree *node)
-
 {
 		if(root == NULL)
 		{
@@ -129,4 +142,10 @@ int RBtree::insert_node(rbtree *node)
 				
 	return 0;
 }
-
+int RBtree::delete_node(rbtree *node)
+{
+	/*case 1 left == NULL*/
+	/*case 2 right == NULL*/
+	/*case 3 left != NULLL right != NULL*/
+	return 0;
+}
