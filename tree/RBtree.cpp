@@ -32,8 +32,8 @@ class RBtree{
 		int insert_fixup(rbtree *node);
 		int delete_fixup(rbtree *node);
 		int RB_transplant(rbtree *snode,rbtree *dnode);
-		int left_rotate(rbtree *node);
-		int right_rotate(rbtree *node);
+		rbtree *left_rotate(rbtree *node);
+		rbtree *right_rotate(rbtree *node);
 		rbtree *getminimumnode(rbtree *node);
 	private:
 		rbtree *root;
@@ -55,22 +55,29 @@ int RBtree::left_rotate(rbtree *node)
 {
 /*R->P*/
 /*R.l->P.r*/
+	rbtree **root;
+	
+	*root = node->parent;
 	node->rightchild->parent = node->parent;
 	node->parent = node->rightchild;
 	node->rightchild = node->rightchild->leftchild;
 	node->rightchild->parent = node;
 	
-	return 0;
+	
+	return *root;
 }
 /*right rotate*/
 int RBtree::right_rotate(rbtree *node)
 {
+	rbtree **root;	
+
+	*root = node->parent;
 	node->leftchild->parent = node->parent;
 	node->parent = node->leftchild;
 	node->leftchild = node->leftchild->rightchild;
 	node->leftchild->parent = node;
 	
-	return 0;
+	return *root;
 }
 int RB_transplant(rbtree *snode,rbtree *dnode)
 {
@@ -144,8 +151,109 @@ int RBtree::insert_node(rbtree *node)
 }
 int RBtree::delete_node(rbtree *node)
 {
+	
 	/*case 1 left == NULL*/
+
 	/*case 2 right == NULL*/
+
 	/*case 3 left != NULLL right != NULL*/
+
 	return 0;
+
+}
+
+int RBtree::insert_fixup(rbtree *node)
+{
+	
+}
+
+int RBtree::delete_fixup(rbtree *node)
+{
+	rbtree *parentnode = node->parent;
+	rbtree *unclenode;
+	rbtree *rootnode;
+	int color_root;
+	if(node->color == RED)
+	{
+		node->color = BLACK;	
+		return 0;
+	}
+	
+	if(node == parentnode->leftnode)
+	{
+		unclenode = parent->rightchild;
+		/*case 1: bro is red*/
+		if(unclenode->color == RED)
+		{
+			rootnode = right_rotate(parentnode);
+			/*re-color*/
+			rootnode->color = BLACK;
+		}
+		if(unclenode->color == BLACK)
+		{
+		/*case 2: bro is black and all bro's child is black*/
+			if((unclenode->leftchild == BLACK)&&(unclenode->right->color == BLACK))
+			{
+				/*re-color*/
+				unclenode->color = RED;
+				delete_fixup(parentnode);
+			}
+		/*case 3:bro is black and leftchild is black rightchild is red*/
+			if((unclenode->leftchild == BLACK)&&(unclenode->right->color == RED))
+			{
+				rootnode = right_rotate(unclOBenode);
+				/*re-color*/
+				rootnode->color = BLACK;
+				rootnode->rightchild->color = RED; 
+			}	
+		/*case 4:bro is black and rightchild is black leftchild is red*/
+			if((unclenode->leftchild == RED)&&(unclenode->right->color == BLACK))
+			{
+				color_root = parentnode->color;
+				rootnode = left_rotate(parent);
+				rootnode->color = color_root;
+				rootnode->rightchild = BLACK;
+			}
+		}
+	}
+	else
+	{
+		unclenode = parent->leftchild;
+		/*case 1: bro is red*/
+		if(unclenode->color == RED)
+		{
+			rootnode = left_rotate(parentnode);
+			/*re-color*/
+			rootnode->color = BLACK;
+			/*switch to case 2,3or4*/
+		}
+		if(unclenode->color == BLACK)
+		{
+		/*case 2: bro is black and all bro's child is black*/
+			if((unclenode->leftchild == BLACK)&&(unclenode->right->color == BLACK))
+			{
+				/*re-color*/
+				unclenode->color = RED;
+				delete_fixup(parentnode);
+			}
+		/*case 3:bro is black and leftchild is black rightchild is red*/
+			if((unclenode->leftchild == BLACK)&&(unclenode->right->color == RED))
+			{
+				rootnode = left_rotate(unclOBenode);
+				/*re-color*/
+				rootnode->color = BLACK;
+				rootnode->leftchild->color = RED; 
+			}	
+		/*case 4:bro is black and rightchild is black leftchild is red*/
+			if((unclenode->leftchild == RED)&&(unclenode->right->color == BLACK))
+			{
+				color_root = parentnode->color;
+				rootnode = right_rotate(parent);
+				rootnode->color = color_root;
+				rootnode->leftchild = BLACK;
+			}
+		}	
+	}
+	return 0;
+		
 }
