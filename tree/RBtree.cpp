@@ -152,19 +152,99 @@ int RBtree::insert_node(rbtree *node)
 int RBtree::delete_node(rbtree *node)
 {
 	
+	int color_orgin = RED;
+	rbtree *x_node;
 	/*case 1 left == NULL*/
-
+	if(node->leftchild == NULL)
+	{
+		color_orgin = node->color;
+		RB_transplant(node,node->rightchild);
+	}
 	/*case 2 right == NULL*/
-
+	else if(node->rightchild == NULL)
+	{
+		color_orgin = node->color;
+		RB_transplant(node,node->leftchild);
+	}
 	/*case 3 left != NULLL right != NULL*/
-
+	else 
+	{
+		color_orgin = node->color;
+		x_node = getminimumnode(node->right);
+		RB_transplant(xnode,node);
+	}
+	if(color_orgin == BLACK)
+	{
+		delete_fixup(node);
+	}
+	
 	return 0;
 
 }
 
 int RBtree::insert_fixup(rbtree *node)
 {
-	
+	rbtree *unclenode,*parentnode，*rootnode,*grandnode;
+	if(node->parent == BLACK)
+	{
+		return 0;
+	}
+	parentnode = node->parent;
+	grandnode = parent->parent;
+	/*leftchild*/
+	if(parent = parent->leftchild)
+	{
+		/*uncle not be null*/
+		unclenode = node->parent->rightchild;
+		/*case 1: uncle is red*/
+		if(unclenode->color == RED)
+		{
+			/*re-color*/
+			unclenode->color = BLACK;
+			parentnode->color = BLACK;
+			insert(parentnode->parent);
+		}
+		/*case 2:uncle is black*/
+		else
+		{
+			if(node = node->rightchild)
+			{
+					rootnode = left_rotate(parent);
+			}
+			/*right-rotate*/
+			rootnode = right_rotate(grandnode);
+			/*re-color*/
+			rootnode->color = BLACK;
+			rootnode->rightchild = RED;
+			rootnode->leftchild = RED;
+		}
+	}
+	else
+	{
+		unclenode = node->parent->leftchild;
+		/*case 1: uncle is red*/
+		if(unclenode->color == RED)
+		{
+			/*re-color*/
+			unclenode->color = BLACK;
+			parentnode->color = BLACK;
+			insert(parentnode->parent);
+		}
+		/*case 2:uncle is black*/
+		else
+		{
+			if(node = node->rightchild)
+			{
+					rootnode = right_rotate(parent);
+			}
+			/*right-rotate*/
+			rootnode = left_rotate(grandnode);
+			/*re-color*/
+			rootnode->color = BLACK;
+			rootnode->rightchild = RED;
+			rootnode->leftchild = RED;
+		}
+	}
 }
 
 int RBtree::delete_fixup(rbtree *node)
