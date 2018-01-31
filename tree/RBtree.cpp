@@ -4,12 +4,10 @@
 
 using namespace std;
 
-
-template<typename T>
 class RBtree{
 	private:
 		struct rbtree{
-			T key;
+			int key;
 			rbtree *leftchild;
 			rbtree *rightchild；
 			rbtree *parent;
@@ -35,6 +33,13 @@ class RBtree{
 		rbtree *left_rotate(rbtree *node);
 		rbtree *right_rotate(rbtree *node);
 		rbtree *getminimumnode(rbtree *node);
+		rbtree *search_key(int key);
+		/*left-root-right*/
+		int inorder_traverse();
+		/*root-left-right*/
+		int preorder_traverse();
+		rbtree* successor(rbtree *node);
+		rbtree* predecessor(rbtree *node);
 	private:
 		rbtree *root;
 };
@@ -53,31 +58,37 @@ rbtree* RBtree::getminimumnode(rbtree *node)
 /*left rotate*/
 int RBtree::left_rotate(rbtree *node)
 {
-/*R->P*/
-/*R.l->P.r*/
-	rbtree **root;
+	rbtree **newroot;
+	/*restore new rootnode*/
+	*newroot = node->rightchild;
+	*newroot->parent = node->parent;
+	node->parent = *newroot;
+	node->rightchild = *newroot->leftchild;
+	if(*newroot->leftchild != NULL)
+	{	
+		node->rightchild->parent = node;
+	}
+	newroot->leftchild = node;
 	
-	*root = node->parent;
-	node->rightchild->parent = node->parent;
-	node->parent = node->rightchild;
-	node->rightchild = node->rightchild->leftchild;
-	node->rightchild->parent = node;
-	
-	
-	return *root;
+	return *newroot;
 }
 /*right rotate*/
 int RBtree::right_rotate(rbtree *node)
 {
-	rbtree **root;	
-
-	*root = node->parent;
-	node->leftchild->parent = node->parent;
-	node->parent = node->leftchild;
-	node->leftchild = node->leftchild->rightchild;
-	node->leftchild->parent = node;
+	rbtree **newroot;
+	/*restore new rootnode*/
+	*newroot = node->leftchild;
+	*newroot->parent = node->parent;
+	node->parent = *newroot;
 	
-	return *root;
+	node->leftchild = *newroot->rightchild;
+	if(*newroot->rightchild != NULL)
+	{	
+		node->leftchild->parent = node;
+	}
+	newroot->leftchild = node;
+	
+	return *newroot;
 }
 int RB_transplant(rbtree *snode,rbtree *dnode)
 {
@@ -336,4 +347,35 @@ int RBtree::delete_fixup(rbtree *node)
 	}
 	return 0;
 		
+}
+rbtree *search_key(T key)
+{
+	
+}
+int inorder_traverse()
+{
+	return 0;
+}
+/*root-left-right*/
+int preorder_traverse()
+{
+	return 0;
+}
+rbtree* successor(rbtree *node)
+{
+	return 0;
+}
+rbtree* predecessor(rbtree *node)
+{
+	return 0;
+}
+int RBtree_init(vector<T> ivec)
+{
+	return 0;
+}
+
+int main()
+{
+	
+	return 0;
 }
