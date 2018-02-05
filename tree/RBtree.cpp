@@ -1,6 +1,7 @@
 /*R-B Tree*/
 
 #include<iostream>
+#include<vector>
 
 using namespace std;
 
@@ -15,6 +16,7 @@ class RBtree{
 		};
 
 	public:
+		typedef rbtree*	iterator;
 		enum COLOR{
 			BLACK;
 			RED;
@@ -22,9 +24,11 @@ class RBtree{
 	public:
 		RBtree():root(NULL){};
 		~RBtree(){};
+		iterator creat_node(int key);
 		int insert_node(rbtree *node);
 		int delete_node(rbtree *node);
-		rbtree *search_node(rbtree *node);
+	
+		iterator search_node(iterator node ,int key);
 		int printtree(rbtree *node);
 	private:
 		int insert_fixup(rbtree *node);
@@ -33,7 +37,9 @@ class RBtree{
 		rbtree *left_rotate(rbtree *node);
 		rbtree *right_rotate(rbtree *node);
 		rbtree *getminimumnode(rbtree *node);
-		rbtree *search_key(int key);
+		rbtree* getmaxmumnode(rbtree *node);
+	
+		rbtree *search_key(iterator rootnode,int key);
 		/*left-root-right*/
 		int inorder_traverse();
 		/*root-left-right*/
@@ -43,7 +49,13 @@ class RBtree{
 	private:
 		rbtree *root;
 };
-
+iterator RBtree::creat_node(int key);
+{
+	rbtree* node = new rbtree;
+	rbtree** pnode = node;
+	node->key = key;
+	return *pnode;
+}
 rbtree* RBtree::getminimumnode(rbtree *node)
 {
 	rbtree *temp_node;
@@ -51,6 +63,17 @@ rbtree* RBtree::getminimumnode(rbtree *node)
 	{
 		temp_node = node;
 		node = node->leftchild;
+	}
+	
+	return node;
+}
+rbtree* RBtree::getmaxmumnode(rbtree *node)
+{
+	rbtree *temp_node;
+	while(node->rightchild != NULL)
+	{
+		temp_node = node;
+		node = node->rightchild;
 	}
 	
 	return node;
@@ -348,34 +371,109 @@ int RBtree::delete_fixup(rbtree *node)
 	return 0;
 		
 }
-rbtree *search_key(T key)
+rbtree *search_key(iterator rootnode,int key)
 {
-	
+		if(rootnode->key == key)
+		{	
+			return rootnode;
+		}
+		else if(rootnode->key>key)
+		{
+			if(root->leftchild != NULL)
+				return search_key(root->leftchild);
+			else
+				return NULL;
+		}
+		else
+		{
+			if(root->rightchild != NULL)
+				return search_key(root->rightchild);
+			else
+				return NULL;
+		}
 }
-int inorder_traverse()
+/*left-root-right*/
+int RBtree::inorder_traverse(rbtree *rootnode)
 {
+	if(rootnode->leftchild != NULL)
+	{
+		inorder_traverse(rootnode->leftchild);
+	}
+	cout<<rootnode->key<<" "<<endl;
+	if(rootnode->rightchild != NULL)
+	{
+		inorder_traverse(rootnode->rightchild);
+	}
 	return 0;
 }
 /*root-left-right*/
-int preorder_traverse()
+int RBtree::preorder_traverse()
 {
+	cout<<rootnode->key<<" "<<endl;
+	if(rootnode->leftchild != NULL)
+	{
+		inorder_traverse(rootnode->leftchild);
+	}
+	if(rootnode->rightchild != NULL)
+	{
+		inorder_traverse(rootnode->rightchild);
+	}
 	return 0;
 }
-rbtree* successor(rbtree *node)
+/*according to inorder_traverse*/
+/*find first node dont have leftchild equal to find minmum of right*/
+rbtree* RBtree::successor(rbtree *node)
 {
-	return 0;
+	return getminimumnode(node->rightchild);
 }
-rbtree* predecessor(rbtree *node)
+/*find minmum of right*/
+rbtree* RBtree::predecessor(rbtree *node)
 {
-	return 0;
-}
-int RBtree_init(vector<T> ivec)
-{
-	return 0;
+	return getmaxmumnode(node->rightchild);
 }
 
+int RBtree::RBtree_init(vector<int> ivec)
+{
+	int vec_size = ivec.size();
+	for(int i =0;i<vec_size;i++)
+	{
+		/*这种表达方式是否可行，需要调试*/
+		rbtree* inode = new rbtree;
+		inode->key = ivec
+		insert_node(inode);
+	}
+	return 0;
+}
+int RBtree::printtree(int mode)
+{
+	if(mode = 0)
+	{
+		inorder_traverse(root);
+	}
+	else
+	{
+		preorder_traverse(root);
+	}
+	return 0;
+}
 int main()
 {
+	int init_arry[10] = {1,2,3,4,5,6,7,8,9,10};
+	vector<int> ivec(array,array+10);
+	
+	RBtree iRBtree = new RBtree();
+	
+	iRBtree.RBtree_init(ivec);
+	
+	printtree(0);
+	
+	iRBtree.insert_node(iRBtree.creat_node(12));
+	
+	printtree(0);
+	
+	iRBtree.delete_node(iRBtree.creat_node(5));
+	
+	printtree(0);
 	
 	return 0;
 }
