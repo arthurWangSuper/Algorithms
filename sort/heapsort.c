@@ -8,6 +8,7 @@
 /*	       / \  /		            */
 /*            2   8 1                       */
 /********************************************/
+/*用数组表示的堆 下标为根结点为 1*/
 #include<stdio.h>
 
 #define LEFT(i) 2*i
@@ -21,10 +22,12 @@ void maxheap(int *array,int size,int cursor)
 	int lefttmp = 0;
 	int righttmp = 0;
 	int cur = 0;
+	
 	lefttmp = LEFT(parenttmp);
 	righttmp = RIGHT(parenttmp);		
 	treetmpval = array[parenttmp-1];		
 	cur = parenttmp;
+	
 	if(lefttmp > size)
 	{
 		return ;
