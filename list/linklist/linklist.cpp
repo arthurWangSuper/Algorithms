@@ -62,7 +62,7 @@ class linklist{
 			}
 			return tmp;
 		}
-		       
+		void reveserlist();		       
         public:
                 Node *head,*tail;
 };
@@ -100,19 +100,36 @@ void linklist::printlinklist()
 {
         for(Node *p = head->next;p != tail; )
         {
-                cout<<p->val<<endl;
+                cout<<p->val<<" ";
                 p = p->next;
         }
+	cout<<endl;
+}
+
+void linklist::reveserlist()
+{
+	Node *first = head->next;
+
+	while(first->next !=tail)
+	{
+		Node *nextNode = first->next;
+
+		first->next = nextNode->next;
+		nextNode->next = head->next;
+		head->next = nextNode;	
+	}
+	
 }
 int main()
 {
         linklist *cur = new linklist();
 		
 	cur->initlinklist();
-	linklist::iterator it = (*cur)[2];
-	cur->insert(it,30);
-	it = (*cur)[4];
-	cur->erase(it);
-        cur->printlinklist();
+//	linklist::iterator it = (*cur)[2];
+//	cur->insert(it,30);
+	//it = (*cur)[4];
+	//cur->erase(it);
+        cur->reveserlist();
+	cur->printlinklist();
         return 0;
 }
