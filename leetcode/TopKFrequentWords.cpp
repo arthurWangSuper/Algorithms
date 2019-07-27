@@ -9,6 +9,11 @@
 
 using namespace std;
 //leetcode 692
+//Given a non-empty list of words, return the k most frequent elements.
+
+//Your answer should be sorted by frequency from highest to lowest. 
+//If two words have the same frequency, 
+//then the word with the lower alphabetical order comes first.
 
 class Solution{
 public:
@@ -50,10 +55,7 @@ public:
     }
 };
 //leetcode 347
-//给定一个非空的整数数组，返回其中出现频率前 k 高的元素。
-//要求：
-//你可以假设给定的 k 总是合理的，且 1 ≤ k ≤ 数组中不相同的元素的个数。
-//你的算法的时间复杂度必须优于 O(n log n) , n 是数组的大小。
+//Given a non-empty array of integers, return the k most frequent elements.
 
 class Solution2{
 public:
