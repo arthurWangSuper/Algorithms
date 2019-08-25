@@ -32,6 +32,7 @@ public:
             //右侧用多少元素：m2
             const int m1 = l+(r-1)/2;
             const int m2 = k - m1;
+            //二分法
             if(nums1[m1] < nums2[m2-1]){
                 l = m1+1;
             }else
