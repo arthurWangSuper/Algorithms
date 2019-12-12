@@ -31,7 +31,7 @@ public:
         int divisor = nums[length-1];
         int min = 1;
         int max = nums[length-1];
-        // 注意停止条件以及上下边界的调整,以及最终返回为左边界？？
+        // 注意停止条件以及上下边界的调整,以及最终返回为左边界(find the smallest divisor )
         while(min<max){
             divisor = (min+max)/2;
             if(calc(divisor)>threshold)
