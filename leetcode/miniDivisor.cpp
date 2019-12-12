@@ -29,23 +29,20 @@ public:
         sort(nums.begin(),nums.end());
         size_t length = nums.size();
         int divisor = nums[length-1];
-        int min = 0;
+        int min = 1;
         int max = nums[length-1];
-        // 注意停止条件以及上下边界的调整
+        // 注意停止条件以及上下边界的调整,以及最终返回为左边界？？
         while(min<max){
+            divisor = (min+max)/2;
             if(calc(divisor)>threshold)
             {
                 min = divisor+1;
             }
-            else if(calc(divisor)<threshold){
+            else {
                 max = divisor;
-            }
-            else{
-                return divisor;
-            }
-            divisor = (min+max)/2;
+            }    
         }
-        return divisor;
+        return min;
     }
 };
 
