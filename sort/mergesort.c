@@ -36,12 +36,12 @@ int merge(int array[],int low ,int height)
 		left[i] = array[low+i];
 		
 	}
-	left[i] = 1000;
+	left[i] = 1000;//哨兵
 	for(i = 0;i<rightsize;i++)
 	{
 		right[i] = array[medium+i+1];
 	}
-	right[i] = 1000;
+	right[i] = 1000;//哨兵
 
 	i = 0;
 
@@ -85,15 +85,8 @@ int merge(int array[],int low ,int height)
 }
 
 int mergesort(int *array,int low ,int height)
-
 {
-
-	
-
 	int medium = (low+height)/2;
-
-#if 1
-
 	if(low == height)
 	{
 		return 0;
@@ -103,9 +96,7 @@ int mergesort(int *array,int low ,int height)
 	mergesort(array,medium+1,height);
 
 	merge(array,low,height);
-
-#endif
-
+	
 	return 0;
 
 }
