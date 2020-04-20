@@ -6,13 +6,17 @@
 //
 
 // leetcode 684
-//In this problem, a tree is an undirected graph that is connected and has no cycles.
+// In this problem, a tree is an undirected graph that is connected and has no cycles.
 
-//The given input is a graph that started as a tree with N nodes (with distinct values 1, 2, …, N), with one additional edge added. The added edge has two different vertices chosen from 1 to N, and was not an edge that already existed.
+// The given input is a graph that started as a tree with N nodes (with distinct values 1, 2, …, N), 
+// with one additional edge added. The added edge has two different vertices chosen from 1 to N, and was not an edge that already existed.
 
-//The resulting graph is given as a 2D-array of edges. Each element of edges is a pair [u, v] with u < v, that represents an undirected edge connecting nodes u and v.
+// The resulting graph is given as a 2D-array of edges. Each element of edges is a pair [u, v] with u < v, 
+// that represents an undirected edge connecting nodes u and v.
 
-//Return an edge that can be removed so that the resulting graph is a tree of N nodes. If there are multiple answers, return the answer that occurs last in the given 2D-array. The answer edge [u, v] should be in the same format, with u < v.
+// Return an edge that can be removed so that the resulting graph is a tree of N nodes. 
+// If there are multiple answers, return the answer that occurs last in the given 2D-array. 
+// The answer edge [u, v] should be in the same format, with u < v.
 
 #include <stdio.h>
 #include <iostream>
@@ -66,29 +70,48 @@ public:
         for (int i = 0; i<parents_.size(); ++i) {
             parents_[i] = i;
         }
-        bool Union(int u,int v){
-            int pu = Find(u);
-            int pv = Find(v);
-            if(pu == pv) return false;
-            
-            if(ranks_[pv] > ranks_[pu])
-                parents_[pu] = pv;
-            else if(ranks_[pu] > ranks_[pv])
-                parents_[pv] = pu;
-            else{
-                parents_[pv] = pu;
-                ranks_[pv] += 1;
-            }
-            return true;
-        }
-        int Find(int u){
-            if(u != parents_[u])
-                parents_[u] = Find(parents_[u]);
-            return parents_[u];
-        }
     }
-    
+
+    // Merge sets that contains u and v
+    // Return true if merged ,false if u and v are already in one set 
+    bool Union(int u,int v){
+        int pu = Find(u);
+        int pv = Find(v);
+        // already in one set
+        if(pu == pv) return false;
+        
+        // merge low rank tree into high rank tree
+        if(ranks_[pv] > ranks_[pu])
+            parents_[pu] = pv;
+        else if(ranks_[pu] > ranks_[pv])
+            parents_[pv] = pu;
+        else{
+            parents_[pv] = pu;
+            ranks_[pv] += 1;
+        }
+        return true;
+    }
+    // get the root of u
+    int Find(int u){
+        if(u != parents_[u])
+            // Compress the path during traversal
+            parents_[u] = Find(parents_[u]);
+        return parents_[u];
+    }
 private:
     vector<int> parents_;
     vector<int> ranks_;
  };
+// union-find
+class SolutionUF{
+public:
+    //图的表示，邻接表
+    vector<int> findRedundantConnection(vector<vector<int>>& edges){
+        UnionFindSet s(edges.size());
+
+        for(const auto& edge:edges)
+            if(!s.Union(edge[0],edge[1]))
+                return edge;
+        return {};
+    }
+};
