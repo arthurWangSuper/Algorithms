@@ -63,13 +63,6 @@ void buildMaxheap(int *array,int size)
 	{
 		maxheap(array,size,i);	
 	}
-#if DEBUG	
-	for(i = 0;i<size;i++)
-	{
-		printf(" %d",array[i]);	
-	}
-	printf("\nbuild complete!!!\n");
-#endif
 }
 void heapsort(int *array,int size)
 {
@@ -80,44 +73,17 @@ void heapsort(int *array,int size)
 	temp = array[0];
 	array[0] = array[size-1];
 	array[size-1] = temp;
-	
 	/*将最大值逐出序列*/
 	size--;
-#if DEBUG
-	printf("result: ");
-	for(i = 0;i<10;i++)
-	{
-		printf(" %d",array[i]);	
-	}
-	printf("\n");
-#endif
 	while(size)
 	{		
 		maxheap(array,size,1);
-#if DEBUG	
-		printf("maxheap: ");		
-		for(i = 0;i<10;i++)
-		{
-			printf(" %d",array[i]);	
-		}
-		printf("\n");
-#endif
 		/*交换最后的值与头节点*/
 		temp = array[0];
 		array[0] = array[size-1];
 		array[size-1] = temp;
-#if DEBUG		
-		printf("result: ");		
-		for(i = 0;i<10;i++)
-		{
-			printf(" %d",array[i]);	
-		}
-		printf("\n");		
-#endif	
 		size--;	
 	}
-	
-
 }
 
 int main()

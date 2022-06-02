@@ -127,25 +127,26 @@ void graph<T,N>:: print_param() const
 }
 
 template<typename T,size_t N>
-void graph<T,N>::dijkstra(int *shorter_index,int *shorter_length,int num) const;
+void graph<T,N>::dijkstra(int *shorter_index,int *shorter_length,int vertex) const;
 {
     //indicate has get min value
     bool flag[N];
     memset(flag,0,sizeof(flag));
-
-    for(int i =0;i<N;i++)
+    // 初始化最短路径数组与最短路径的点就是它自己
+    for(int i = 0;i < N;++i)
     {
-        shorter_length[i] = egde[num][j];
-        shorter_index = num;
+        shorter_length[i] = egde[vertex][i];
+        shorter_index[i] = vertex;
     }
 
     int j = num;
     int k = -1;
     int min = 0;
     flag[num]=true;
-    for(int n =1;n<N;n++)
+    for(int n =0;n<N;n++)
     {
         min = INT_MIN;
+	// 找到当前最短路径数组下的最短路径
         for(int index = 0;index<N;index++)
         {
             if(!flag[index]&&short_length[index]<min)
@@ -156,9 +157,10 @@ void graph<T,N>::dijkstra(int *shorter_index,int *shorter_length,int num) const;
         }
         flag[k]=true;
         j=k;
+	// 通过最短路径来更新与其连接各点的最短路径
         for(int _index = 0;_index<N;_index++)
         {
-            if(!flag[_index]&&shorter_length[num][j]+edge[j][_index]<shorter_length[_index])
+            if(!flag[_index]&&shorter_length[j]+edge[j][_index]<shorter_length[_index])
             {
                 shorter_length[_index] = short_length[num][j]+edge[j][_index];
                 shorter_index[_index] = j;
