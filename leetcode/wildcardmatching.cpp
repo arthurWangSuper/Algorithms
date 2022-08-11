@@ -17,7 +17,6 @@ public:
             if(s[ps] == s[pp]){
                 ps ++;
                 pp ++;
-                
             }
         }
     }
